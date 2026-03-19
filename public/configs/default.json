@@ -1,0 +1,47 @@
+{
+  "name": "default",
+  "year": 2026,
+  "city": "default",
+  "socialBase": {
+    "min": 6000,
+    "max": 36000
+  },
+  "fundBase": {
+    "min": 2500,
+    "max": 36000
+  },
+  "fundRatioRange": [
+    5,
+    6,
+    7,
+    8,
+    10,
+    12
+  ],
+  "items": {
+    "pension": {
+      "individualRate": 8,
+      "companyRate": 16
+    },
+    "medical": {
+      "individualRate": 2,
+      "companyRate": 9.5
+    },
+    "unemployment": {
+      "individualRate": 0.5,
+      "companyRate": 0.5
+    },
+    "workInjury": {
+      "individualRate": 0,
+      "companyRate": 0.4
+    },
+    "maternity": {
+      "individualRate": 0,
+      "companyRate": 0.8
+    },
+    "housingFund": {
+      "individualRate": 12,
+      "companyRate": 12
+    }
+  }
+}
