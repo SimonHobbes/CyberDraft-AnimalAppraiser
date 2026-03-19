@@ -11,7 +11,9 @@ const ACTIVE_CONFIG_KEY = 'niuma_active_config'
  */
 export async function loadBuiltinConfigs() {
   try {
-    const res = await fetch('/configs/default.json')
+    // 使用 import.meta.env.BASE_URL 确保在 GitHub Pages 下能正确拼接仓库路径
+    const baseUrl = import.meta.env.BASE_URL
+    const res = await fetch(`${baseUrl}configs/default.json`)
     if (!res.ok) throw new Error('Failed to load default config')
     const config = await res.json()
     return { default: config }
