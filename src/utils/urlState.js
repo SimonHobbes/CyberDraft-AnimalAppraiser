@@ -45,6 +45,15 @@ export function pushStateToUrl(state) {
 }
 
 /**
+ * 清除 URL 中的 hash，防止刷新时反复加载
+ */
+export function clearUrlHash() {
+  const url = new URL(window.location.href)
+  url.hash = ''
+  window.history.replaceState(null, '', url.toString())
+}
+
+/**
  * 生成包含状态的完整 URL
  */
 export function generateShareUrl(state) {

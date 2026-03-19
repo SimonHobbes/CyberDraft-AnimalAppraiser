@@ -5,7 +5,7 @@ import PieChart from './components/PieChart'
 import ConfigModal from './components/ConfigModal'
 import InfoTooltip from './components/InfoTooltip'
 import { calculate } from './utils/calculator'
-import { decodeState, pushStateToUrl, generateShareUrl } from './utils/urlState'
+import { decodeState, pushStateToUrl, generateShareUrl, clearUrlHash } from './utils/urlState'
 import {
   loadBuiltinConfigs,
   getSavedConfigs,
@@ -40,7 +40,7 @@ function App() {
       // 恢复状态
       if (restored) {
         if (restored.config) {
-          const rkey = 'url_restored'
+          const rkey = `url_restored_${Date.now()}`
           all[rkey] = restored.config
           setConfigs({ ...all })
           setActiveKey(rkey)
@@ -48,6 +48,9 @@ function App() {
         }
         if (restored.grossSalary) setGrossSalary(restored.grossSalary)
         if (restored.paymentBase) setPaymentBase(restored.paymentBase)
+        
+        // 清除 URL hash 防止刷新时重复生成模板
+        clearUrlHash()
       } else {
         const savedKey = getActiveConfigKey()
         const key = all[savedKey] ? savedKey : 'default'
@@ -120,19 +123,18 @@ function App() {
 
   // 分享
   const handleShare = useCallback(async () => {
+    // 按照用户需求，仅分享配置模板，不分享个人的应发工资和缴纳基数
     const state = {
-      config: activeConfig,
-      grossSalary,
-      paymentBase,
+      config: activeConfig
     }
     const url = generateShareUrl(state)
     try {
       await navigator.clipboard.writeText(url)
-      showToast('分享链接已复制到剪贴板 ✓')
+      showToast('配置分享链接已复制到剪贴板 ✓')
     } catch {
       showToast('复制失败，请手动复制地址栏链接')
     }
-  }, [activeConfig, grossSalary, paymentBase])
+  }, [activeConfig])
 
   // Toast
   const showToast = (msg) => {
@@ -140,12 +142,7 @@ function App() {
     setTimeout(() => setToastMsg(''), 3000)
   }
 
-  // 同步到 URL
-  useEffect(() => {
-    if (grossSalary > 0 && activeConfig) {
-      pushStateToUrl({ config: activeConfig, grossSalary, paymentBase })
-    }
-  }, [activeConfig, grossSalary, paymentBase])
+
 
   // 计算
   const result = useMemo(() => {
