@@ -53,9 +53,15 @@ function App() {
         clearUrlHash()
       } else {
         const savedKey = getActiveConfigKey()
-        const key = all[savedKey] ? savedKey : 'default'
-        setActiveKey(key)
+        let key = all[savedKey] ? savedKey : 'default'
+        
+        // 如果连 'default' 都被删除了，就默认选中加载到的第一个模板
+        if (!all[key] && Object.keys(all).length > 0) {
+          key = Object.keys(all)[0]
+        }
+        
         if (all[key]) {
+          setActiveKey(key)
           setActiveConfig(JSON.parse(JSON.stringify(all[key])))
         }
       }

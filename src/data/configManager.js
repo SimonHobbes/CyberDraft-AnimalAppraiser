@@ -7,20 +7,28 @@ const CONFIG_STORAGE_KEY = 'niuma_configs'
 const ACTIVE_CONFIG_KEY = 'niuma_active_config'
 
 /**
- * 获取内置配置列表（从 public/configs/ 目录加载）
+ * 获取内置配置列表（从 public/configs/ 目录加载所有 .json 文件）
  */
 export async function loadBuiltinConfigs() {
+  const configs = {}
   try {
-    // 使用 import.meta.env.BASE_URL 确保在 GitHub Pages 下能正确拼接仓库路径
-    const baseUrl = import.meta.env.BASE_URL
-    const res = await fetch(`${baseUrl}configs/default.json`)
-    if (!res.ok) throw new Error('Failed to load default config')
-    const config = await res.json()
-    return { default: config }
+    // 利用 Vite 提供的批量导入功能，直接自动读取目录下所有的 JSON 模板
+    const templates = import.meta.glob('/public/configs/*.json', { eager: true })
+    
+    for (const path in templates) {
+      // 从路径里提取出文件名如: "2026_杭州"
+      const match = path.match(/\/([^\/]+)\.json$/)
+      if (match) {
+        const key = match[1]
+        // 有些环境中 eager import json 会返回模块对象，它真正的配置在 .default 里
+        const configData = templates[path].default || templates[path]
+        configs[key] = configData
+      }
+    }
   } catch (e) {
     console.error('Error loading builtin configs:', e)
-    return {}
   }
+  return configs
 }
 
 /**

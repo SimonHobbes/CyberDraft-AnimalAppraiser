@@ -13,8 +13,9 @@ export default function Toolbar({
   onShare,
 }) {
   const displayName = (cfg, key) => {
+    const isUrl = key.startsWith('url_restored_')
     const name = CONFIG_DISPLAY[cfg.name] || cfg.name || key
-    return `${name} [${cfg.year || ''}]`
+    return `${isUrl ? '🔗 [URL获取] ' : ''}${name} [${cfg.year || ''}]`
   }
 
   return (

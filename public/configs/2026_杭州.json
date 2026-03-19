@@ -1,0 +1,49 @@
+{
+    "name": "杭州上半年",
+    "year": 2026,
+    "city": "杭州",
+    "socialBase": {
+        "min": 4986,
+        "max": 25299
+    },
+    "fundBase": {
+        "min": 2490,
+        "max": 40694
+    },
+    "fundRatioRange": [
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+    ],
+    "items": {
+        "pension": {
+            "individualRate": 8,
+            "companyRate": 16
+        },
+        "medical": {
+            "individualRate": 2,
+            "companyRate": 8.9
+        },
+        "unemployment": {
+            "individualRate": 1,
+            "companyRate": 2
+        },
+        "injury": {
+            "individualRate": 0,
+            "companyRate": 0.2
+        },
+        "maternity": {
+            "individualRate": 0,
+            "companyRate": 0.6
+        },
+        "housingFund": {
+            "individualRate": 7,
+            "companyRate": 7
+        }
+    }
+}
